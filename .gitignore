@@ -130,3 +130,6 @@ dmypy.json
 
 # JavaScript
 node_modules
+
+# VS Code
+.devcontainer
