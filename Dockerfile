@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM node:16-bullseye
 
 ################################
 # (optional) CONFIGURE AT BUILD TIME:
@@ -24,8 +24,7 @@ RUN apt-get update
 RUN apt-get install -y libsqlite3-mod-spatialite
 
 # Install Python requirements
-RUN pip install -r requirements.txt
-
+# RUN pip install -r requirements.txt
 
 # Command run when container launches
 CMD echo "Running from your built container at version/branch: ${APP_VERSION}"
