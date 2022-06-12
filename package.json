@@ -13,6 +13,8 @@
     "http-errors": "~1.6.3",
     "mkdirp": "^1.0.4",
     "morgan": "~1.9.1",
-    "nunjucks": "^3.2.3"
+    "nunjucks": "^3.2.3",
+    "spatialite": "^0.1.0",
+    "sqlite3": "^5.0.8"
   }
 }
