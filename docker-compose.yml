@@ -17,7 +17,7 @@ services:
     volumes:
       - .:/app
   ##   ---- SETUP YOUR DEFAULT PORT -----
-  #   ports:
+    ports:
       - '8000:8000'
   ## ---- UNCOMMENT BELOW FOR POSTGRESQL DATABASE AND REDIS (common for web apps) -----
   #    links:
