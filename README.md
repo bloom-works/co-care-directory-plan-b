@@ -7,4 +7,4 @@ TODO: Update this to actually be readable
 1. docker run -it --rm -v $PWD:/app -p 3000:3000 co-care-directory bash
 1. npm install
 1. npm start
-1. http://localhost:3000/results?zip=80203&miles=30
+1. http://localhost:3000/results?zip=80203&miles=3 (change zip and mile radius)
