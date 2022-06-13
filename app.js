@@ -3,10 +3,23 @@ var nunjucks = require('nunjucks')
 var path = require('path')
 var cookieParser = require('cookie-parser')
 var logger = require('morgan')
-var indexRouter = require('./routes/index')
-var searchRouter = require('./routes/search')
 var sqlite = require('spatialite')
 const fs = require('fs')
+
+// *** SETUP EXPRESS ***
+var app = express()
+
+// Configure Nunjucks as the template engine
+nunjucks.configure('views', {
+    autoescape: true,
+    express: app
+})
+
+app.use(logger('dev'))
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+app.use(cookieParser())
+app.use(express.static(path.join(__dirname, 'public')))
 
 
 // *** CREATE DATABASE ***
@@ -22,8 +35,9 @@ if (process.env.ZIP_DATA_FILE) {
 
 var dbPath = './db.sqlite'
 try {
-    fs.accessSync(dbPath, fs.constants.F_OK) // throw an error if it doesn't exist
+    fs.accessSync(dbPath, fs.constants.R_OK) // throw an error if it doesn't exist
     console.log('Using existing database')
+    addRoutesAfterDBCheck(app)
 }
 catch (error) {
     // TODO Make sure this is done before moving on (async/await/promise?)
@@ -94,6 +108,7 @@ catch (error) {
             db.run("UPDATE zip_codes SET geometry = GeomFromText('POINT('||\"lon\"||' '||\"lat\"||')',4326)", (error) => {
                 if(!error) {
                     console.log("Database created! Ready to serve requests.")
+                    addRoutesAfterDBCheck(app)
                 }
             })
         })
@@ -101,26 +116,10 @@ catch (error) {
 }
 
 
-
-
-// *** SETUP EXPRESS ***
-var app = express()
-
-// Configure Nunjucks as the template engine
-nunjucks.configure('views', {
-    autoescape: true,
-    express: app
-})
-
-app.use(logger('dev'))
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
-app.use(cookieParser())
-app.use(express.static(path.join(__dirname, 'public')))
-
-app.use('/', indexRouter)
-app.use('/', searchRouter)
-
+function addRoutesAfterDBCheck(app) {
+    app.use('/', require('./routes/index'))
+    app.use('/', require('./routes/search'))
+}
 
 
 module.exports = app
