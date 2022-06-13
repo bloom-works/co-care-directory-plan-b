@@ -27,7 +27,7 @@ try {
 }
 catch (error) {
     // TODO Make sure this is done before moving on (async/await/promise?)
-    console.log('Creating new database file')
+    console.log('Creating new database file. Please wait...')
     var db = new sqlite.Database(dbPath)
     db.spatialite(() => {
         db.serialize(() => {
@@ -91,7 +91,11 @@ catch (error) {
 
             // Add geometry data
             db.run("SELECT AddGeometryColumn('zip_codes','geometry', 4326,'POINT',2)")
-            db.run("UPDATE zip_codes SET geometry = GeomFromText('POINT('||\"lon\"||' '||\"lat\"||')',4326)")
+            db.run("UPDATE zip_codes SET geometry = GeomFromText('POINT('||\"lon\"||' '||\"lat\"||')',4326)", (error) => {
+                if(!error) {
+                    console.log("Database created! Ready to serve requests.")
+                }
+            })
         })
     })
 }
