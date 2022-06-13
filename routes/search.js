@@ -12,7 +12,7 @@ router.get('/results', function (req, res, next) {
   let zip = req.query.zip
   let miles = req.query.miles
   // Calculate the number of kilometers
-  let meters = miles * 1.609344 * 1000
+  let meters = miles * 1609.344
 
   db.spatialite(() => {
     db.serialize(() => {
